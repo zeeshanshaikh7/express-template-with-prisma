@@ -1,0 +1,31 @@
+// =============================================================================
+// SCHOOL ERP SYSTEM — Prisma Schema
+// PostgreSQL 15+  ·  Version 2.0  ·  June 2026
+// Derived from School ERP Database Schema Design v2.0
+// =============================================================================
+// NOTE: Prisma does not support multiple PostgreSQL schemas natively without
+// the multiSchema preview feature. Enable it as shown below and map every
+// model to its schema via @@schema().
+// =============================================================================
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["auth"]
+}
+
+
+model User {
+  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  username           String    @unique @db.VarChar(100)
+  email              String?   @unique @db.VarChar(255)
+  phone              String?   @unique @db.VarChar(15)
+  passwordHash       String    @map("password_hash") @db.Text
+
+  @@map("users")
+  @@schema("auth")
+}
